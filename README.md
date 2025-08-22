@@ -57,7 +57,7 @@ In this section we can explain how our system perform deployments and branch han
 
 ## Module Catalog (High‑level)
 
-Fill this table first to give a quick map of the platform.
+We list all the modules here in this table to give an overall view.
 
 | Module      | Summary                                 | Core Models                | Primary APIs                         | FE‑Only/Non‑API work? |
 | ----------- | --------------------------------------- | -------------------------- | ------------------------------------ | --------------------- |
