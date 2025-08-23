@@ -1,3 +1,4 @@
+
 # Platform Modules & API Overview
 
 ---
@@ -164,7 +165,20 @@ Our system is structured around **Organizations**, ensuring clear accountability
 - This ensures every client is mapped to a responsible team member.
 #### Domain Model
 
-![[Untitled diagram _ Mermaid Chart-2025-08-23-063611.png]]
+```mermaid
+flowchart TD
+    subgraph Org["🏢 Organization"]
+        Admin["🏢 Org Admin"]
+        Member["👤 Members (RMs)"]
+        Product["🛠 Product Support"]
+        Operation["⚙️ Operational Support"]
+    end
+
+    Member -->|Handles| Clients["👥 Clients"]
+    Clients --> ClientA["Client A"]
+    Clients --> ClientB["Client B"]
+
+```
 #### API Inventory
 
 | Resource | Method | Path                        | Description                   |
@@ -197,7 +211,22 @@ The **Investments Module** helps in shaping and understanding a client’s portf
         
     - **Complete Client Information** (all linked financial data)
 
-![[Untitled diagram _ Mermaid Chart-2025-08-23-070300.png]]
+### Domain Model
+```mermaid
+flowchart TD
+    IM[💹 Investments Module] --> Policy[📑 Investment Policy]
+    IM --> Product[📊 Product Understanding]
+
+    Policy --> Risk[Risk Appetite]
+    Policy --> Scope[Individual / Family Level]
+
+    Product --> ExtTxn[🔗 External Transactions]
+    Product --> ExtPort[🌐 External Portfolio]
+    Product --> IntPort[🏠 Internal Portfolio]
+    Product --> ClientInfo[👤 Client Information]
+
+```
+
 
 #### API Inventory
 | Resource    | Method | Path                            | Description                     |
@@ -219,7 +248,20 @@ The **Proposal Module** powers our **PPT generation system**.
     
 - Acts as the backbone for generating **Proposal, Performance, Analytics, Review, and Family Analytics PPTs**.
 
-![[Untitled diagram _ Mermaid Chart-2025-08-23-074941.png]]
+#### Domain Model
+```mermaid
+flowchart TD
+    PM[📑 Proposal Module] --> Data[📊 Data Gathering]
+    PM --> Reports[📂 PPT Reports]
+    PM --> Logic[⚙️ Business Logic]
+
+    Reports --> Prop[💼 Proposal PPTs]
+    Reports --> Perf[📈 Performance PPTs]
+    Reports --> Ana[📊 Analytics PPTs]
+    Reports --> Rev[🔄 Review PPTs]
+    Reports --> Fam[👨‍👩‍👧 Family Analytics PPTs]
+
+```
 #### API Inventory
 
 | Resource  | Method | Path                                          | Description                                  |
@@ -267,7 +309,17 @@ The **Masters Module** acts as the **organization’s central control hub**.
     
 4. **Asset Allocation** → Allocation mapped to different **risk profiles**, editable/customizable by the organization.
 
-![[Untitled diagram _ Mermaid Chart-2025-08-23-081850.png]]
+#### Domain Model 
+```mermaid
+flowchart TD
+    MM["🏛 Masters Module"]:::adminOnly --> Filter["📂 Filter Products - Buy | Sell | Hold"]
+    MM --> Portfolio["📊 Model Portfolios"]
+    MM --> Research["🔍 Asset Research"]
+    MM --> Allocation["⚖️ Asset Allocation by Risk Profiles"]
+
+    classDef adminOnly fill:#ffe6e6,stroke:#d33,stroke-width:2px;
+
+```
 
 #### API Inventory
 | Resource | Method | Path                     | Description                |
@@ -312,5 +364,39 @@ Our platform specializes in generating **customizable PPTs** tailored to differe
     
 - **Scope:** Consolidates performance across all family accounts.
 
-![[Untitled diagram _ Mermaid Chart-2025-08-23-061556.png]]
+```mermaid
+flowchart TD
+    PPT[Customizable PPTs] --> Proposal
+    PPT --> Performance
+    PPT --> Analytics
+    PPT --> Review
+    PPT --> FamilyAnalytics
+
+    Proposal --> Lumpsum
+    Proposal --> SIP
+
+    Performance --> MF[Mutual Funds Only]
+    Analytics --> AllProducts[MF, Stocks, Bonds, PMS, etc.]
+    FamilyAnalytics --> FamilyView[All Family Accounts]
+    Review --> Changes[Recommended Changes for Better Performance]
+
+```
 #### Typical Flows (Sequence)
+
+This is an example diagram that I have created need, please let me know if we need something like this.
+```mermaid
+sequenceDiagram
+  participant U as User (AE)
+  participant FE as Frontend
+  participant API as API Gateway
+  participant S as Prospecting Svc
+
+  U->>FE: Create Prospect
+  FE->>API: POST /v1/prospects
+  API->>S: Validate & persist
+  S-->>API: 201 + Prospect
+  API-->>FE: 201 + Prospect
+  FE-->>U: Show success
+```
+
+
